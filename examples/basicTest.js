@@ -9,7 +9,8 @@ define("examples/basicTest",[
         name : "test addition function",
         inputArgs : [3,4],
         output : 7,
-        fn : addition
+        fn : addition,
+        fooFilter : "bar"
       },{
         name : "test addition function thorw error",
         inputArgs : [3,"a"],
@@ -28,5 +29,4 @@ define("examples/basicTest",[
         fn : setTimeout
     }]);
   };
-
-})
+});

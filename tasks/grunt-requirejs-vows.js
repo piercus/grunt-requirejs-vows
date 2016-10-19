@@ -26,15 +26,49 @@ module.exports = function(grunt) {
 
     var testTarget = this.target;
 
-    var testFeature = grunt.option('feature');
-    var testCategory = grunt.option('category');
-    var testIndex = grunt.option('index');
-    var testEx = grunt.option('ex');
+
     var done = this.async();
     var options = this.options();
     var rjsModules = options.rjsModules;
     var baseUrl = options.baseUrl;
     var label = options.baseUrl || "generated vows test suite";
+    var cliFilters = options.cliFilters || [];
+
+
+    var filterCases = function(inputCases){
+      var outputCases = [];
+
+      var cliIndex = grunt.option("index")
+
+      for(var i = 0; i < inputCases.length; i++){
+        var selected = true
+
+        for (var j = 0; j < cliFilters.length; j++){
+          var value = grunt.option(cliFilters[j]);
+
+          if(value && inputCases[i][cliFilters[j]] !== value){
+            selected = false;
+          }
+        }
+
+        inputCases[i].index = i;
+
+        if(typeof(cliIndex) !== "undefined" && cliIndex != i){
+          selected = false;
+        }
+
+        if(selected){
+          outputCases.push(inputCases[i]);
+        }
+      }
+
+      return outputCases;
+    };
+
+    var testFeature = grunt.option('feature');
+    var testCategory = grunt.option('category');
+    var testIndex = grunt.option('index');
+    var testEx = grunt.option('ex');
 
     if(rjsModules.length == 0){
       grunt.fail.fatal("options.rjsModules must be set");
@@ -46,27 +80,7 @@ module.exports = function(grunt) {
       })
     }
 
-    var filterCases = function(inputCases){
-      var outputCases = [];
-      /*for(var i = 0; i < inputCases.length; i++){
-        if(testFeature && cases.feature !== testFeature){
-          continue;
-        }
-        if(testCategory && cases.category !== testCategory){
-          continue;
-        }
-        if(testEx && cases.ex !== testEx){
-          continue;
-        }
-        if(testIndex && cases.index !== i){
-          continue;
-        }
-        inputCases.index = i;
-        outputCases.push(inputCases);
-      }*/
 
-      return inputCases;
-    };
 
     //var label = "test suite with options feature : "+testFeature +", and category : "+testCategory+", and index : "+testIndex;
 
@@ -81,7 +95,7 @@ module.exports = function(grunt) {
         var vowsSuite = vows.describe(label);
 
         for(var i = 0; i < cases.length; i++){
-          var vowsTest = buildTestCase(cases[i]);
+          var vowsTest = buildTestCase(cases[i], cases[i].index);
           vowsSuite.addBatch(vowsTest);
           //console.log(vowsTest);
         }

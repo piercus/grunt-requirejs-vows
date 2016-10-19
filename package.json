@@ -1,16 +1,23 @@
 {
-  "name": "grunt-engine-vows",
+  "name": "grunt-requirejs-vows",
   "version": "0.0.1",
   "description": "Grunt tasks for engine testing",
-  "main": "index.js",
+  "main": "tasks/grunt-requirejs-vows.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "grunt test"
   },
-  "author": "Pierre Colle (Klap)",
-  "license": "UNLICENSED",
+  "author": "Pierre Colle",
+  "license": "MIT",
   "dependencies": {
     "grunt": "^1.0.1",
     "requirejs": "^2.3.2",
     "vows": "^0.8.1"
-  }
+  },
+  "keywords": [
+    "gruntplugin",
+    "requirejs",
+    "vows",
+    "test",
+    "automation"
+  ],
 }

@@ -20,17 +20,20 @@ npm install --save-dev grunt-requirejs-vows
 
 ## Usage
 
-### Gruntfile
+### Basic Gruntfile example
 
 ```js
 
 module.exports = function(grunt) {
 
   grunt.initConfig({
-
     "requirejs-vows": {
       jsonsFiles: {
-        rjsModules : ["example/basic"],
+        options : {
+          rjsModules : ["examples/basicTest"],
+          baseUrl : __dirname,
+          cliFilters : ["fooFilter"]
+        }
       }
     }
   });
@@ -44,6 +47,17 @@ module.exports = function(grunt) {
 };
 
 ```
+#### Launch tests
+
+```sh
+grunt test
+
+# only run 2nd test
+grunt test --index=2
+
+# only run 2nd tests with fooFilter=bar
+grunt test --fooFilter=bar
+```
 
 ### Requirejs Modules
 
@@ -53,22 +67,25 @@ in `./examples/basicTest.js`
 
 ```js
 define("examples/basicTest",[
-    "example/addition",
-    "example/setTimeout"
+    "examples/addition",
+    "examples/setTimeout"
   ],function(addition, setTimeout){
 
   return function(cb){
-    return [{
+    cb(null, [{
       // test addition function
+        name : "test addition function",
         inputArgs : [3,4],
         output : 7,
-        fn : addition
+        fn : addition,
+        fooFilter : "bar"
       },{
-      // test addition function
+        name : "test addition function thorw error",
         inputArgs : [3,"a"],
         outputError : true,
         fn : addition
       },{
+        name : "test setTimeout function",
         input: {
           delay : 3000,
           foo : "bar"
@@ -78,10 +95,9 @@ define("examples/basicTest",[
         },
         async : true,
         fn : setTimeout
-    }];
+    }]);
   };
-
-})
+});
 ```
 
 ### addition
@@ -111,16 +127,18 @@ define("examples/setTimeout",[
   ],function(){
 
   return function(obj, cb){
-    setTimeout(obj.delay, function(){
+    setTimeout(function(){
       var res = {}
+
+      delete obj.delay;
 
       for(key in obj) if(obj.hasOwnProperty(key)){
         res[key+"_foo"] = obj[key]
       }
 
       cb(null, res);
-    });
+    },obj.delay);
   };
 
-})
+});
 ```

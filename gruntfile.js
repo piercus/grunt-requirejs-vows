@@ -6,14 +6,15 @@ module.exports = function(grunt) {
       jsonsFiles: {
         options : {
           rjsModules : ["examples/basicTest"],
-          baseUrl : __dirname
+          baseUrl : __dirname,
+          cliFilters : ["fooFilter"]
         }
       }
     }
   });
 
   //grunt.loadNpmTasks('grunt-requirejs-vows');
-  require('./index.js')(grunt);
+  require('./tasks/grunt-requirejs-vows')(grunt);
 
   grunt.registerTask('test', [
     "requirejs-vows"
