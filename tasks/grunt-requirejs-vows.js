@@ -1,9 +1,9 @@
 'use strict';
 
-var rjs = require("requirejs");
 var async = require("async");
 var vows = require("vows");
 var buildTestCase = require("../lib/buildTestCase.js");
+var path = require("path");
 
 var isArray = ('isArray' in Array) ? Array.isArray : function (value) {
   return Object.prototype.toString.call(value) === '[object Array]';
@@ -33,7 +33,8 @@ module.exports = function(grunt) {
     var baseUrl = options.baseUrl;
     var label = options.baseUrl || "generated vows test suite";
     var cliFilters = options.cliFilters || [];
-
+    var rjsConfig = options.rjsConfig;
+    var rjsModule = options.rjsModule;
 
     var filterCases = function(inputCases){
       var outputCases = [];
@@ -65,19 +66,23 @@ module.exports = function(grunt) {
       return outputCases;
     };
 
-    var testFeature = grunt.option('feature');
-    var testCategory = grunt.option('category');
-    var testIndex = grunt.option('index');
-    var testEx = grunt.option('ex');
-
     if(rjsModules.length == 0){
       grunt.fail.fatal("options.rjsModules must be set");
     }
 
-    if(baseUrl){
-      rjs.config({
-        baseUrl : baseUrl
-      })
+    if(rjsModule){
+      var rjs = rjsModule;
+    } else {
+      grunt.fail.fatal("Please provide a rjsModule into requirejs-vows options")
+    }
+
+    if(rjsConfig){
+      //console.log(process.argv[1], __filename, __dirname, process.env.PWD, rjsConfigFile)
+      //require(path.join(process.env.PWD,rjsConfigFile));
+      rjs.config(rjsConfig);
+
+    } else {
+      grunt.fail.fatal("Please provide a rjsConfig into requirejs-vows options")
     }
 
 

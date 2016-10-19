@@ -23,6 +23,7 @@ npm install --save-dev grunt-requirejs-vows
 ### Basic Gruntfile example
 
 ```js
+var rjs = require("requirejs");
 
 module.exports = function(grunt) {
 
@@ -31,7 +32,10 @@ module.exports = function(grunt) {
       example: {
         options : {
           rjsModules : ["examples/basicTest"],
-          baseUrl : __dirname,
+          rjsModule : rjs,
+          rjsConfig : {
+            baseUrl : __dirname
+          }, // see http://requirejs.org/docs/api.html#config
           cliFilters : ["fooFilter"]
         }
       }

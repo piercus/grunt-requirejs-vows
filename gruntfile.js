@@ -1,20 +1,25 @@
+
 module.exports = function(grunt) {
 
-  grunt.initConfig({
+  require('./tasks/grunt-requirejs-vows')(grunt);
+  
+  var rjs = require("requirejs");
 
+  grunt.initConfig({
     "requirejs-vows": {
-      jsonsFiles: {
+      example: {
         options : {
           rjsModules : ["examples/basicTest"],
-          baseUrl : __dirname,
+          rjsModule : rjs,
+          rjsConfig : {
+            baseUrl : __dirname
+          }, // see http://requirejs.org/docs/api.html#config
           cliFilters : ["fooFilter"]
         }
       }
     }
   });
 
-  //grunt.loadNpmTasks('grunt-requirejs-vows');
-  require('./tasks/grunt-requirejs-vows')(grunt);
 
   grunt.registerTask('test', [
     "requirejs-vows"
