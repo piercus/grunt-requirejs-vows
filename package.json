@@ -9,6 +9,7 @@
   "author": "Pierre Colle",
   "license": "MIT",
   "dependencies": {
+    "async": "^2.1.2",
     "grunt": "^1.0.1",
     "requirejs": "^2.3.2",
     "vows": "^0.8.1"
