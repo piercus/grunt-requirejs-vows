@@ -28,7 +28,7 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     "requirejs-vows": {
-      jsonsFiles: {
+      example: {
         options : {
           rjsModules : ["examples/basicTest"],
           baseUrl : __dirname,
