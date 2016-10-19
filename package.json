@@ -13,6 +13,13 @@
     "requirejs": "^2.3.2",
     "vows": "^0.8.1"
   },
+  "bugs": {
+    "url": "http://github.com/piercus/grunt-requirejs-vows/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/piercus/grunt-requirejs-vows"
+  },
   "keywords": [
     "gruntplugin",
     "requirejs",
