@@ -1,6 +1,6 @@
 {
   "name": "grunt-requirejs-vows",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Grunt task for testing using requirejs",
   "main": "tasks/grunt-requirejs-vows.js",
   "scripts": {
@@ -27,5 +27,8 @@
     "vows",
     "test",
     "automation"
-  ]
+  ],
+  "devDependencies": {
+    "grunt-bump": "^0.8.0"
+  }
 }
