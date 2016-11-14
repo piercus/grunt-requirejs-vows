@@ -48,7 +48,7 @@ module.exports = function(grunt) {
           var value = grunt.option(cliFilters[j]);
 
           if(value && inputCases[i][cliFilters[j]] !== value){
-            grunt.log.debug("index "+i+" filtered because "+ inputCases[i][cliFilters[j]] +"!=="+ value);
+            grunt.log.debug("index "+i+" filtered because "+cliFilters[j]+" filter : "+ inputCases[i][cliFilters[j]] +"!=="+ value);
             selected = false;
           }
 
