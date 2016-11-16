@@ -12,6 +12,12 @@ define("examples/completeTest",[
             outputError : false,
         },{
           // test addition function
+            name : "test addition function does not throw error",
+            inputArgs : [1,-1],
+            fn : addition,
+            output : 0
+        },{
+          // test addition function
             name : "test createFile function",
             inputArgs : ["tmp.txt"],
             fn : createFile,
