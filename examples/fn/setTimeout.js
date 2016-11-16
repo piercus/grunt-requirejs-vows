@@ -1,4 +1,4 @@
-define("examples/setTimeout",[
+define("examples/fn/setTimeout",[
   ],function(){
 
   return function(obj, cb){

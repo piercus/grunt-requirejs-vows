@@ -1,4 +1,4 @@
-define("examples/addition",[
+define("examples/fn/addition",[
   ],function(){
 
   return function(a,b){

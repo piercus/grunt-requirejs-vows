@@ -1,6 +1,6 @@
 define("examples/basicTest",[
-    "examples/addition",
-    "examples/setTimeout"
+    "examples/fn/addition",
+    "examples/fn/setTimeout"
   ],function(addition, setTimeout){
 
   return function(cb){

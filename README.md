@@ -71,8 +71,8 @@ in `./examples/basicTest.js`
 
 ```js
 define("examples/basicTest",[
-    "examples/addition",
-    "examples/setTimeout"
+    "examples/fn/addition",
+    "examples/fn/setTimeout"
   ],function(addition, setTimeout){
 
   return function(cb){
@@ -106,10 +106,10 @@ define("examples/basicTest",[
 
 ### addition
 
-in `./examples/addition.js`
+in `./examples/fn/addition.js`
 
 ```js
-define("examples/addition",[
+define("examples/fn/addition",[
   ],function(){
 
   return function(a,b){
@@ -124,10 +124,10 @@ define("examples/addition",[
 
 ### object input
 
-in `./examples/setTimeout.js`
+in `./examples/fn/setTimeout.js`
 
 ```js
-define("examples/setTimeout",[
+define("examples/fn/setTimeout",[
   ],function(){
 
   return function(obj, cb){
