@@ -1,7 +1,8 @@
 define("examples/basicTest",[
     "examples/fn/addition",
-    "examples/fn/setTimeout"
-  ],function(addition, setTimeout){
+    "examples/fn/setTimeout",
+    "grunt-requirejs-vows-options"
+  ],function(addition, setTimeout, options){
 
   return function(cb){
     cb(null, [{
@@ -20,10 +21,12 @@ define("examples/basicTest",[
         name : "test setTimeout function",
         input: {
           delay : 3000,
-          foo : "bar"
+          foo : "bar",
+          gruntOptions : options
         },
         output : {
-          foo_foo : "bar"
+          foo_foo : "bar",
+          gruntOptions_foo : options
         },
         async : true,
         fn : setTimeout

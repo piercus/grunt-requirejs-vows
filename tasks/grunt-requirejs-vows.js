@@ -89,7 +89,9 @@ module.exports = function(grunt) {
       grunt.fail.fatal("Please provide a rjsConfig into requirejs-vows options")
     }
 
-
+    rjs.define("grunt-requirejs-vows-options", function(){
+      return options;
+    });
 
     //var label = "test suite with options feature : "+testFeature +", and category : "+testCategory+", and index : "+testIndex;
 
