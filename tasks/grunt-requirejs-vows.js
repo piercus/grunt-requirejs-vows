@@ -99,13 +99,21 @@ module.exports = function(grunt) {
 
       var modules = Array.prototype.slice.call(arguments);
 
+      grunt.log.debug(rjsModules.length+ " modules loaded : ");
+
       async.parallel(modules, function(err, results){
+        if(err){
+          return grunt.fail.fatal(err);
+        }
+
         var vowsBatches = [];
         var cases = filterCases(arrayFlatten(results));
+        grunt.log.debug("Inside Module : "+cases.length);
 
         var vowsSuite = vows.describe(label);
 
         for(var i = 0; i < cases.length; i++){
+          grunt.log.debug("Adding Case : "+cases[i].name);
           var vowsTest = buildTestCase(cases[i], cases[i].index);
           vowsSuite.addBatch(vowsTest);
           //console.log(vowsTest);
