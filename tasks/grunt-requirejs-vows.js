@@ -33,6 +33,10 @@ module.exports = function(grunt) {
     var cliFilters = options.cliFilters || [];
     var rjsConfig = options.rjsConfig;
     var rjsModule = options.rjsModule;
+    var beforeAll = options.beforeAll;
+    var afterAll = options.afterAll;
+
+    var doNothingModule = function(cb){cb()};
 
     var filterCases = function(inputCases){
       var outputCases = [];
@@ -105,48 +109,72 @@ module.exports = function(grunt) {
 
     var rjsModulesNames = modulesDescription.map(function(m){return m.name});
 
+    if(beforeAll){
+      rjsModulesNames.push(beforeAll)
+    }
+    if(afterAll){
+      rjsModulesNames.push(afterAll)
+    }
 
     //var label = "test suite with options feature : "+testFeature +", and category : "+testCategory+", and index : "+testIndex;
     rjs(rjsModulesNames, function() {
+      var args = Array.prototype.slice.call(arguments), afterAllModule, beforeAllModule;
 
-      var modules = Array.prototype.slice.call(arguments);
+      if(afterAll){
+        afterAllModule = args.pop();
+      } else {
+        afterAllModule = doNothingModule
+      }
+
+      if(beforeAll){
+        beforeAllModule = args.pop();
+      } else {
+        beforeAllModule = doNothingModule;
+      }
+
+      var modules = args;
 
       grunt.log.debug(rjsModulesNames.length+ " modules loaded : "+rjsModulesNames);
 
-      async.parallel(modules, function(err, results){
-        if(err){
-          return grunt.fail.fatal(err);
-        }
+      var runModules = function(cb){
+        async.parallel(modules, function(err, results){
+          if(err){
+            return grunt.fail.fatal(err);
+          }
 
-        var vowsSuite = vows.describe(label);
+          var vowsSuite = vows.describe(label);
 
-        var vowsBatches = [];
-        var cases = filterCases(arrayFlatten(results));
-        grunt.log.debug("Inside Module : "+cases.length);
+          var vowsBatches = [];
+          var cases = filterCases(arrayFlatten(results));
+          grunt.log.debug("Inside Module : "+cases.length);
 
-        for(var i = 0; i < cases.length; i++){
-          if(cases[i].name){
-            grunt.log.debug("Adding Case : "+cases[i].name+"-"+cases[i].index);
-            var vowsTest = buildTestCase(cases[i], cases[i].index);
-          } else {
-            var vowsTest = {};
-            var index = cases[i].index;
-            for (var j in cases[i]) if(cases[i].hasOwnProperty(j)) {
-              if(j !== "index"){
-                vowsTest[j+"-"+index] = cases[i][j]
-                grunt.log.debug("Adding Case : "+j+"-"+index);
+          for(var i = 0; i < cases.length; i++){
+            if(cases[i].name){
+              grunt.log.debug("Adding Case : "+cases[i].name+"-"+cases[i].index);
+              var vowsTest = buildTestCase(cases[i], cases[i].index);
+            } else {
+              var vowsTest = {};
+              var index = cases[i].index;
+              for (var j in cases[i]) if(cases[i].hasOwnProperty(j)) {
+                if(j !== "index"){
+                  vowsTest[j+"-"+index] = cases[i][j]
+                  grunt.log.debug("Adding Case : "+j+"-"+index);
+                }
               }
             }
+            vowsSuite.addBatch(vowsTest);
           }
-          vowsSuite.addBatch(vowsTest);
-        }
 
-        //console.log("run", cases[0]);
+          //console.log("run", cases[0]);
 
-        vowsSuite.run({verbose : true}, function(e){
-          done(e);
+          vowsSuite.run({verbose : true}, cb);
         });
+      };
 
+      beforeAllModule(function(){
+        runModules(function(){
+          afterAllModule(done);
+        });
       });
 
     });
