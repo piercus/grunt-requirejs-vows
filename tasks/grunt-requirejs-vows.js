@@ -82,7 +82,7 @@ module.exports = function(grunt) {
       grunt.fail.fatal("Please provide a rjsModule into requirejs-vows options")
     }
 
-    if(rjsConfig){
+    if(rjsConfig && !rjsModule){
       //console.log(process.argv[1], __filename, __dirname, process.env.PWD, rjsConfigFile)
       //require(path.join(process.env.PWD,rjsConfigFile));
       rjs.config(rjsConfig);
