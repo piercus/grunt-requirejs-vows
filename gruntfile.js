@@ -9,7 +9,7 @@ module.exports = function(grunt) {
     "requirejs-vows": {
       example: {
         options : {
-          rjsModules : ["examples/basicTest", "examples/completeTest"],
+          rjsModules : ["examples/basicTest", "examples/completeTest", "examples/vowsTest"],
           rjsModule : rjs,
           rjsConfig : {
             baseUrl : __dirname

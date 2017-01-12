@@ -25,8 +25,6 @@ module.exports = function(grunt) {
   grunt.registerMultiTask('requirejs-vows', 'Use vows js to test requirejs/amd modules', function() {
 
     var testTarget = this.target;
-
-
     var done = this.async();
     var options = this.options();
     var rjsModules = options.rjsModules;
@@ -93,30 +91,54 @@ module.exports = function(grunt) {
       return options;
     });
 
-    //var label = "test suite with options feature : "+testFeature +", and category : "+testCategory+", and index : "+testIndex;
+    var modulesDescription = rjsModules.map(function(mod){
+      if(typeof(mod) === "string"){
+        return {
+          name : mod,
+          mode : "functional"
+        };
+      } else {
+        mod.name = mod.name || mod.moduleName || mod.module;
+        return mod;
+      }
+    });
 
-    rjs(rjsModules, function() {
+    var rjsModulesNames = modulesDescription.map(function(m){return m.name});
+
+
+    //var label = "test suite with options feature : "+testFeature +", and category : "+testCategory+", and index : "+testIndex;
+    rjs(rjsModulesNames, function() {
 
       var modules = Array.prototype.slice.call(arguments);
 
-      grunt.log.debug(rjsModules.length+ " modules loaded : ");
+      grunt.log.debug(rjsModulesNames.length+ " modules loaded : "+rjsModulesNames);
 
       async.parallel(modules, function(err, results){
         if(err){
           return grunt.fail.fatal(err);
         }
 
+        var vowsSuite = vows.describe(label);
+
         var vowsBatches = [];
         var cases = filterCases(arrayFlatten(results));
         grunt.log.debug("Inside Module : "+cases.length);
 
-        var vowsSuite = vows.describe(label);
-
         for(var i = 0; i < cases.length; i++){
-          grunt.log.debug("Adding Case : "+cases[i].name);
-          var vowsTest = buildTestCase(cases[i], cases[i].index);
+          if(cases[i].name){
+            grunt.log.debug("Adding Case : "+cases[i].name+"-"+cases[i].index);
+            var vowsTest = buildTestCase(cases[i], cases[i].index);
+          } else {
+            var vowsTest = {};
+            var index = cases[i].index;
+            for (var j in cases[i]) if(cases[i].hasOwnProperty(j)) {
+              if(j !== "index"){
+                vowsTest[j+"-"+index] = cases[i][j]
+                grunt.log.debug("Adding Case : "+j+"-"+index);
+              }
+            }
+          }
           vowsSuite.addBatch(vowsTest);
-          //console.log(vowsTest);
         }
 
         //console.log("run", cases[0]);
