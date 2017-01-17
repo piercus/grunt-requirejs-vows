@@ -82,8 +82,6 @@ module.exports = function(grunt) {
       grunt.fail.fatal("Please provide a rjsModule into requirejs-vows options")
     }
 
-    console.log("ehere")
-
     if(rjsConfig){
       //console.log(process.argv[1], __filename, __dirname, process.env.PWD, rjsConfigFile)
       //require(path.join(process.env.PWD,rjsConfigFile));
