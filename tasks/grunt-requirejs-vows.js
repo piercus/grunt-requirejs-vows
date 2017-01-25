@@ -179,11 +179,15 @@ module.exports = function(grunt) {
 
       beforeAllModule(function(err){
         if(err){
-          return done(!err);
+          return done(err);
         }
-        runModules(function(err, res){
+        runModules(function(vowsRes){
           afterAllModule(function(){
-            done(!err);
+            if(vowsRes.honored !== vowsRes.total){
+              return done(false)
+            } else {
+              return done()
+            }
           });
         });
       });
