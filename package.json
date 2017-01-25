@@ -1,6 +1,6 @@
 {
   "name": "grunt-requirejs-vows",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "Grunt task for testing using requirejs",
   "main": "tasks/grunt-requirejs-vows.js",
   "scripts": {
