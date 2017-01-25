@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/piercus/grunt-requirejs-vows.svg?branch=master)](https://travis-ci.org/piercus/grunt-requirejs-vows)
+
 ## grunt-engine-vows
 
 Use vows js to test requirejs/amd modules
