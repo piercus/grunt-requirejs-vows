@@ -177,10 +177,13 @@ module.exports = function(grunt) {
         });
       };
 
-      beforeAllModule(function(){
+      beforeAllModule(function(err){
+        if(err){
+          return done(!err);
+        }
         runModules(function(err, res){
           afterAllModule(function(){
-            done();
+            done(!err);
           });
         });
       });
